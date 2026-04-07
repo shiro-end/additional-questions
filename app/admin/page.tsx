@@ -11,6 +11,8 @@ export default function AdminPage() {
   const [sessions, setSessions] = useState<Session[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [confirmDeleteId, setConfirmDeleteId] = useState<string | null>(null);
+  const [deletingId, setDeletingId] = useState<string | null>(null);
 
   useEffect(() => {
     loadSessions();
@@ -43,6 +45,18 @@ export default function AdminPage() {
 
   function getInterviewUrl(token: string) {
     return `${window.location.origin}/interview/${token}`;
+  }
+
+  async function deleteSession(id: string) {
+    setDeletingId(id);
+    const { error } = await getSupabase().from("sessions").delete().eq("id", id);
+    if (error) {
+      setError("削除に失敗しました: " + error.message);
+    } else {
+      setSessions((prev) => prev.filter((s) => s.id !== id));
+    }
+    setDeletingId(null);
+    setConfirmDeleteId(null);
   }
 
   async function copyUrl(token: string) {
@@ -129,12 +143,38 @@ export default function AdminPage() {
                     {formatDate(session.created_at)}
                   </td>
                   <td className="px-4 py-3">
-                    <button
-                      onClick={() => copyUrl(session.token)}
-                      className="text-blue-600 hover:underline text-xs"
-                    >
-                      URLをコピー
-                    </button>
+                    <div className="flex items-center gap-3">
+                      <button
+                        onClick={() => copyUrl(session.token)}
+                        className="text-blue-600 hover:underline text-xs"
+                      >
+                        URLをコピー
+                      </button>
+                      {confirmDeleteId === session.id ? (
+                        <span className="flex items-center gap-1">
+                          <button
+                            onClick={() => deleteSession(session.id)}
+                            disabled={deletingId === session.id}
+                            className="text-xs px-2 py-0.5 bg-red-600 text-white rounded hover:bg-red-700 disabled:opacity-50"
+                          >
+                            {deletingId === session.id ? "削除中..." : "削除する"}
+                          </button>
+                          <button
+                            onClick={() => setConfirmDeleteId(null)}
+                            className="text-xs px-2 py-0.5 border border-gray-300 rounded hover:bg-gray-50 text-gray-600"
+                          >
+                            キャンセル
+                          </button>
+                        </span>
+                      ) : (
+                        <button
+                          onClick={() => setConfirmDeleteId(session.id)}
+                          className="text-red-500 hover:underline text-xs"
+                        >
+                          削除
+                        </button>
+                      )}
+                    </div>
                   </td>
                 </tr>
               ))}
