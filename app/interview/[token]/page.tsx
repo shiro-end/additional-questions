@@ -293,7 +293,7 @@ export default function InterviewPage({ params }: Props) {
         <div className="bg-white rounded-lg border border-gray-200 p-8 max-w-md text-center">
           <h1 className="text-xl font-bold text-gray-900 mb-2">使用済みURL</h1>
           <p className="text-gray-600 text-sm">
-            このURLはすでに使用済みです。ご不明な場合は担当者にお問い合わせください。
+            このURLはすでに使用済みです。ご不明な場合はエージェントにご連絡ください。
           </p>
         </div>
       </div>
@@ -308,7 +308,9 @@ export default function InterviewPage({ params }: Props) {
             追加質問への回答
           </h1>
           <p className="text-sm text-gray-600 mb-6">
-            {session?.candidate_name} 様、以下の内容にご同意の上、回答を開始してください。
+            {session?.candidate_name} 様、選考書類を提出していただきまして、誠にありがとうございます。
+            選考の際に追加でご質問にご回答いただきたいと考えております。
+            以下の内容にご同意の上、回答を開始してください。
           </p>
 
           <div className="space-y-3 mb-6">
@@ -331,7 +333,7 @@ export default function InterviewPage({ params }: Props) {
                 className="mt-0.5 h-4 w-4 rounded border-gray-300"
               />
               <span className="text-sm text-gray-700">
-                記録した内容はPDFとして出力し、担当エージェントに提出します
+                記録した内容はPDFとして出力し、担当エージェントにご自身でご提出いただきます
               </span>
             </label>
             <button
@@ -505,18 +507,16 @@ export default function InterviewPage({ params }: Props) {
             <span className="text-sm text-gray-500">
               質問 {currentQ + 1} / {questions.length}
             </span>
-            <div className="flex items-center gap-2">
-              <span
-                className={`text-lg font-mono font-bold ${
-                  timeWarning
-                    ? "text-red-600 animate-pulse"
-                    : timeLeft <= 30
-                    ? "text-orange-500"
-                    : "text-gray-700"
-                }`}
-              >
-                {formatTime(timeLeft)}
-              </span>
+            <div
+              className={`px-4 py-2 rounded-lg font-mono font-bold text-3xl min-w-[5rem] text-center ${
+                timeWarning
+                  ? "bg-red-100 text-red-600 animate-pulse"
+                  : timeLeft <= 30
+                  ? "bg-orange-100 text-orange-600"
+                  : "bg-gray-100 text-gray-800"
+              }`}
+            >
+              {formatTime(timeLeft)}
             </div>
           </div>
 

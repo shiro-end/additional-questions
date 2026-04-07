@@ -89,7 +89,7 @@ export default function AdminPage() {
                   候補者名
                 </th>
                 <th className="text-left px-4 py-3 font-medium text-gray-600">
-                  メール
+                  担当エージェント
                 </th>
                 <th className="text-left px-4 py-3 font-medium text-gray-600">
                   ステータス
@@ -112,7 +112,7 @@ export default function AdminPage() {
                     {session.candidate_name}
                   </td>
                   <td className="px-4 py-3 text-gray-600">
-                    {session.candidate_email}
+                    {session.agent_email}
                   </td>
                   <td className="px-4 py-3">
                     {session.is_used ? (
