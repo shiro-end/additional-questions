@@ -26,7 +26,7 @@ export default function AdminPage() {
       .order("created_at", { ascending: false });
 
     if (error) {
-      setError("セッションの取得に失敗しました: " + error.message);
+      setError("セッションの取得に失敗しました");
     } else {
       setSessions(data ?? []);
     }
@@ -51,7 +51,7 @@ export default function AdminPage() {
     setDeletingId(id);
     const { error } = await getSupabase().from("sessions").delete().eq("id", id);
     if (error) {
-      setError("削除に失敗しました: " + error.message);
+      setError("削除に失敗しました");
     } else {
       setSessions((prev) => prev.filter((s) => s.id !== id));
     }

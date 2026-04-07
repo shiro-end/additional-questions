@@ -32,6 +32,14 @@ export default function AdminLayout({
               テンプレート管理
             </Link>
           </nav>
+          <form method="POST" action="/api/admin/logout" className="ml-auto">
+            <button
+              type="submit"
+              className="text-sm text-gray-400 hover:text-gray-600"
+            >
+              ログアウト
+            </button>
+          </form>
         </div>
       </header>
       <main className="max-w-5xl mx-auto px-6 py-8">{children}</main>

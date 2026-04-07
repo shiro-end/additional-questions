@@ -152,7 +152,7 @@ export default function NewSessionPage() {
       .single();
 
     if (sessionError || !session) {
-      setError("セッションの作成に失敗しました: " + (sessionError?.message ?? ""));
+      setError("セッションの作成に失敗しました");
       setSubmitting(false);
       return;
     }
@@ -167,7 +167,7 @@ export default function NewSessionPage() {
     );
 
     if (questionsError) {
-      setError("質問の保存に失敗しました: " + questionsError.message);
+      setError("質問の保存に失敗しました");
       setSubmitting(false);
       return;
     }

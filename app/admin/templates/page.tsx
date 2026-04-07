@@ -36,7 +36,7 @@ export default function TemplatesPage() {
       .order("created_at", { ascending: true });
 
     if (error) {
-      setError("テンプレートの取得に失敗しました: " + error.message);
+      setError("テンプレートの取得に失敗しました");
     } else {
       setTemplates(data ?? []);
     }
@@ -64,7 +64,7 @@ export default function TemplatesPage() {
     });
 
     if (error) {
-      setError("テンプレートの作成に失敗しました: " + error.message);
+      setError("テンプレートの作成に失敗しました");
     } else {
       setFormName("");
       setFormQuestions([{ question_text: "", time_limit_seconds: 180 }]);
@@ -106,7 +106,7 @@ export default function TemplatesPage() {
       .eq("id", editingId);
 
     if (error) {
-      setError("テンプレートの更新に失敗しました: " + error.message);
+      setError("テンプレートの更新に失敗しました");
     } else {
       setEditingId(null);
       await loadTemplates();
@@ -117,7 +117,7 @@ export default function TemplatesPage() {
     if (!confirm("このテンプレートを削除しますか？")) return;
     const { error } = await getSupabase().from("templates").delete().eq("id", id);
     if (error) {
-      setError("削除に失敗しました: " + error.message);
+      setError("削除に失敗しました");
     } else {
       await loadTemplates();
     }

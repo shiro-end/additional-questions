@@ -55,18 +55,23 @@ export default function InterviewPage({ params }: Props) {
   }, []);
 
   async function loadSession() {
+    // is_used = false の行のみ更新することで同時アクセスを防ぐ
     const { data: sess } = await getSupabase()
       .from("sessions")
-      .select("*")
+      .update({ is_used: true })
       .eq("token", params.token)
+      .eq("is_used", false)
+      .select()
       .single();
 
     if (!sess) {
-      setStep("invalid");
-      return;
-    }
-    if (sess.is_used) {
-      setStep("used");
+      // 更新できなかった場合、存在確認で invalid か used かを判別
+      const { data: existing } = await getSupabase()
+        .from("sessions")
+        .select("id")
+        .eq("token", params.token)
+        .single();
+      setStep(existing ? "used" : "invalid");
       return;
     }
 
@@ -75,12 +80,6 @@ export default function InterviewPage({ params }: Props) {
       .select("*")
       .eq("session_id", sess.id)
       .order("order_index", { ascending: true });
-
-    // Mark session as used
-    await getSupabase()
-      .from("sessions")
-      .update({ is_used: true })
-      .eq("id", sess.id);
 
     setSession(sess);
     setQuestions(qs ?? []);
