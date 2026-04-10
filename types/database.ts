@@ -7,7 +7,6 @@ export interface Database {
           token: string;
           candidate_name: string;
           candidate_email: string;
-          agent_email: string;
           is_used: boolean;
           created_at: string;
           expires_at: string | null;
@@ -17,7 +16,6 @@ export interface Database {
           token?: string;
           candidate_name: string;
           candidate_email: string;
-          agent_email: string;
           is_used?: boolean;
           created_at?: string;
           expires_at?: string | null;
@@ -27,7 +25,6 @@ export interface Database {
           token?: string;
           candidate_name?: string;
           candidate_email?: string;
-          agent_email?: string;
           is_used?: boolean;
           created_at?: string;
           expires_at?: string | null;

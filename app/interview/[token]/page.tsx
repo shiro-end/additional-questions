@@ -716,19 +716,11 @@ export default function InterviewPage({ params }: Props) {
                 もう一度PDFを生成する
               </button>
 
-              {session?.agent_email && (
-                <div className="mt-4 p-4 bg-gray-50 rounded-md text-left">
-                  <p className="text-sm font-medium text-gray-900 mb-1">
-                    提出先
-                  </p>
-                  <p className="text-sm text-gray-600 mb-2">
-                    保存したPDFを以下のメールアドレスに送付してください。
-                  </p>
-                  <p className="text-sm font-medium text-blue-600 break-all">
-                    {session.agent_email}
-                  </p>
-                </div>
-              )}
+              <div className="mt-4 p-4 bg-gray-50 rounded-md text-left">
+                <p className="text-sm text-gray-700">
+                  保存したPDFを担当エージェントへメールにてお送りください。
+                </p>
+              </div>
             </div>
           </div>
         </div>

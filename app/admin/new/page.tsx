@@ -12,24 +12,6 @@ interface QuestionItem {
   time_limit_seconds: number;
 }
 
-const AGENT_EMAILS_KEY = "agentEmailHistory";
-
-function loadAgentEmailHistory(): string[] {
-  if (typeof window === "undefined") return [];
-  try {
-    return JSON.parse(localStorage.getItem(AGENT_EMAILS_KEY) ?? "[]");
-  } catch {
-    return [];
-  }
-}
-
-function saveAgentEmail(email: string) {
-  const history = loadAgentEmailHistory();
-  if (!history.includes(email)) {
-    localStorage.setItem(AGENT_EMAILS_KEY, JSON.stringify([email, ...history].slice(0, 10)));
-  }
-}
-
 const URL_MESSAGE = `※このリンクは一度踏むと、二度目は期限切れとなり、回答できなくなります。
 　音声のみ(orテキスト)で回答が可能ですが、なるべく面接と近い静かな環境をご準備ください。
 　音声をご利用の場合はchromeが推奨環境です。Safariやスマホなどの場合音声機能が使えない場合がございます。`;
@@ -37,8 +19,6 @@ const URL_MESSAGE = `※このリンクは一度踏むと、二度目は期限�
 export default function NewSessionPage() {
   const router = useRouter();
   const [candidateName, setCandidateName] = useState("");
-  const [agentEmail, setAgentEmail] = useState("");
-  const [agentEmailHistory, setAgentEmailHistory] = useState<string[]>([]);
   const [questions, setQuestions] = useState<QuestionItem[]>([
     { question_text: "", time_limit_seconds: 120 },
   ]);
@@ -52,7 +32,6 @@ export default function NewSessionPage() {
 
   useEffect(() => {
     loadTemplates();
-    setAgentEmailHistory(loadAgentEmailHistory());
   }, []);
 
   async function loadTemplates() {
@@ -129,10 +108,6 @@ export default function NewSessionPage() {
       setError("候補者氏名を入力してください");
       return;
     }
-    if (!agentEmail.trim()) {
-      setError("担当エージェントメールアドレスを入力してください");
-      return;
-    }
     const validQuestions = questions.filter((q) => q.question_text.trim());
     if (validQuestions.length === 0) {
       setError("少なくとも1つの質問を入力してください");
@@ -146,7 +121,6 @@ export default function NewSessionPage() {
       .insert({
         candidate_name: candidateName.trim(),
         candidate_email: "",
-        agent_email: agentEmail.trim(),
       })
       .select()
       .single();
@@ -172,7 +146,6 @@ export default function NewSessionPage() {
       return;
     }
 
-    saveAgentEmail(agentEmail.trim());
     setGeneratedUrl(`${window.location.origin}/interview/${session.token}`);
     setSubmitting(false);
   }
@@ -194,7 +167,6 @@ export default function NewSessionPage() {
   function resetForm() {
     setGeneratedUrl(null);
     setCandidateName("");
-    setAgentEmail("");
     setQuestions([{ question_text: "", time_limit_seconds: 120 }]);
     setSelectedTemplateId("");
   }
@@ -286,47 +258,6 @@ export default function NewSessionPage() {
                 placeholder="山田 太郎"
                 className="w-full px-3 py-2 border border-gray-300 rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
               />
-            </div>
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
-                担当エージェントメールアドレス
-              </label>
-              <input
-                type="email"
-                list="agent-email-history"
-                value={agentEmail}
-                onChange={(e) => setAgentEmail(e.target.value)}
-                placeholder="agent@example.com"
-                className="w-full px-3 py-2 border border-gray-300 rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-              />
-              {agentEmailHistory.length > 0 && (
-                <datalist id="agent-email-history">
-                  {agentEmailHistory.map((email) => (
-                    <option key={email} value={email} />
-                  ))}
-                </datalist>
-              )}
-              {agentEmailHistory.length > 0 && (
-                <div className="mt-2 flex flex-wrap gap-2">
-                  {agentEmailHistory.map((email) => (
-                    <button
-                      key={email}
-                      type="button"
-                      onClick={() => setAgentEmail(email)}
-                      className={`px-2 py-1 text-xs rounded border transition-colors ${
-                        agentEmail === email
-                          ? "bg-blue-600 text-white border-blue-600"
-                          : "bg-white text-gray-600 border-gray-300 hover:bg-gray-50"
-                      }`}
-                    >
-                      {email}
-                    </button>
-                  ))}
-                </div>
-              )}
-              <p className="mt-1 text-xs text-gray-500">
-                候補者がPDFを送付する宛先として表示されます
-              </p>
             </div>
           </div>
         </section>
