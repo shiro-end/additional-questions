@@ -58,7 +58,7 @@ export default function InterviewPage({ params }: Props) {
     // is_used = false の行のみ更新することで同時アクセスを防ぐ
     const { data: sess } = await getSupabase()
       .from("sessions")
-      .update({ is_used: true })
+      .update({ is_used: true, opened_at: new Date().toISOString() })
       .eq("token", params.token)
       .eq("is_used", false)
       .select()

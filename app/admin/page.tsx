@@ -109,6 +109,9 @@ export default function AdminPage() {
                   作成日時
                 </th>
                 <th className="text-left px-4 py-3 font-medium text-gray-600">
+                  開封日時
+                </th>
+                <th className="text-left px-4 py-3 font-medium text-gray-600">
                   操作
                 </th>
               </tr>
@@ -135,6 +138,9 @@ export default function AdminPage() {
                   </td>
                   <td className="px-4 py-3 text-gray-600">
                     {formatDate(session.created_at)}
+                  </td>
+                  <td className="px-4 py-3 text-gray-600">
+                    {session.opened_at ? formatDate(session.opened_at) : "―"}
                   </td>
                   <td className="px-4 py-3">
                     <div className="flex items-center gap-3">

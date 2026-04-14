@@ -10,6 +10,7 @@ export interface Database {
           is_used: boolean;
           created_at: string;
           expires_at: string | null;
+          opened_at: string | null;
         };
         Insert: {
           id?: string;
@@ -19,6 +20,7 @@ export interface Database {
           is_used?: boolean;
           created_at?: string;
           expires_at?: string | null;
+          opened_at?: string | null;
         };
         Update: {
           id?: string;
@@ -28,6 +30,7 @@ export interface Database {
           is_used?: boolean;
           created_at?: string;
           expires_at?: string | null;
+          opened_at?: string | null;
         };
         Relationships: [];
       };
