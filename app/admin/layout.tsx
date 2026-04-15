@@ -26,6 +26,12 @@ export default function AdminLayout({
               新規作成
             </Link>
             <Link
+              href="/admin/jobs"
+              className="text-sm text-gray-600 hover:text-gray-900"
+            >
+              求人管理
+            </Link>
+            <Link
               href="/admin/templates"
               className="text-sm text-gray-600 hover:text-gray-900"
             >

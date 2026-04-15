@@ -66,6 +66,59 @@ export interface Database {
           },
         ];
       };
+      job_postings: {
+        Row: {
+          id: string;
+          title: string;
+          is_active: boolean;
+          created_at: string;
+        };
+        Insert: {
+          id?: string;
+          title: string;
+          is_active?: boolean;
+          created_at?: string;
+        };
+        Update: {
+          id?: string;
+          title?: string;
+          is_active?: boolean;
+          created_at?: string;
+        };
+        Relationships: [];
+      };
+      job_questions: {
+        Row: {
+          id: string;
+          job_id: string;
+          order_index: number;
+          question_text: string;
+          time_limit_seconds: number;
+        };
+        Insert: {
+          id?: string;
+          job_id: string;
+          order_index: number;
+          question_text: string;
+          time_limit_seconds?: number;
+        };
+        Update: {
+          id?: string;
+          job_id?: string;
+          order_index?: number;
+          question_text?: string;
+          time_limit_seconds?: number;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "job_questions_job_id_fkey";
+            columns: ["job_id"];
+            isOneToOne: false;
+            referencedRelation: "job_postings";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
       templates: {
         Row: {
           id: string;
